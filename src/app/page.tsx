@@ -4,6 +4,8 @@ import eventDataRaw from "@/data/event_info.json";
 import { Church, GlassWater, MapPin, Gift, Map, Navigation, Shirt } from "lucide-react";
 import Footer from "@/components/Footer";
 
+export const dynamic = 'force-dynamic';
+
 export default async function HomePage() {
   const mainColor = await ConfigurationService.getConfig('mainColor', eventDataRaw.theme.mainColor);
   const accentColor = await ConfigurationService.getConfig('accentColor', eventDataRaw.theme.accentColor);

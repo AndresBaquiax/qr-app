@@ -5,6 +5,8 @@ import ClientRSVP from './ClientRSVP';
 import eventData from '@/data/event_info.json';
 
 // En Next.js 15/16 (App Router), `params` es una Promise o debe usarse con cuidado. 
+export const dynamic = 'force-dynamic';
+
 export default async function InvitationPage(props: { params: Promise<{ token: string }> }) {
   const params = await props.params;
   const token = params.token;
