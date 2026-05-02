@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+model Invitation {
+  id           String   @id @default(uuid())
+  token        String   @unique
+  familyName   String   // e.g. "Familia Perez", "Juan Carlos"
+  maxGuests    Int      @default(1) // Number of people invited
+  phone        String?
+  hasResponded Boolean  @default(false)
+  isAttending  Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Configuration {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

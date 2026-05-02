@@ -1,0 +1,88 @@
+{
+  "theme": {
+    "title": "Mis 15 Años - Alicia en el País de las Maravillas",
+    "mainColor": "#0A192F",
+    "accentColor": "#D4AF37",
+    "fonts": {
+      "heading": "Playfair Display, serif",
+      "body": "Inter, sans-serif"
+    }
+  },
+  "event": {
+    "date": "2026-05-23T16:00:00",
+    "name": "15 Años de Jimena Fernanda",
+    "quinceanera": "Jimena Fernanda Baquiax Barrios",
+    "quote": "Con el corazón agradecido a Dios por el don de la vida, te invito a acompañarme en la celebración de mis XV años, para juntos pedir su bendición y que su luz guíe siempre mi camino.",
+    "dressCode": "Formal (El color azul queda reservado para la Quinceañera)",
+    "parents": [
+      "Lic. Henry Baquiax",
+      "Licda. Orquídea Barrios"
+    ],
+    "godparentsGroups": [
+      {
+        "title": "Padrinos Religiosos",
+        "names": [
+          "Sr. Carlos Ixcamparij",
+          "Licda. Abigail Barrios"
+        ]
+      },
+      {
+        "title": "Padrinos de Muñeca",
+        "names": [
+          "Sr. Fernando Baquiax",
+          "Sra. Adriana Coronado"
+        ]
+      },
+      {
+        "title": "Padrino de Anillo",
+        "names": [
+          "Lic. Allan Barrios"
+        ]
+      }
+    ],
+    "gifts": {
+      "title": "Lluvia de Sobres",
+      "description": "Tu presencia en este día tan especial es el mejor regalo. Pero si deseas darme un obsequio, agradecería que fuera en efectivo."
+    }
+  },
+  "locations": [
+    {
+      "type": "Misa",
+      "name": "Parroquia San Mateo Apóstol",
+      "address": "San Mateo, Quetzaltenango",
+      "time": "16:00",
+      "coordinates": {
+        "lat": 14.8631,
+        "lng": -91.5645
+      },
+      "mapLink": "https://maps.google.com/?q=Parroquia+San+Mateo+Apostol+Quetzaltenango",
+      "wazeLink": "https://waze.com/ul?q=Parroquia+San+Mateo+Apostol+Quetzaltenango"
+    },
+    {
+      "type": "Recepción",
+      "name": "Restaurante Don Franklin",
+      "address": "Quetzaltenango, Guatemala",
+      "time": "18:00",
+      "coordinates": {
+        "lat": 14.8347,
+        "lng": -91.5183
+      },
+      "mapLink": "https://maps.google.com/?q=Restaurante+Don+Franklin+Quetzaltenango",
+      "wazeLink": "https://waze.com/ul?q=Restaurante+Don+Franklin+Quetzaltenango"
+    }
+  ],
+  "itinerary": [
+    {
+      "time": "4:00 PM",
+      "title": "Misa",
+      "description": "Parroquia San Mateo Apóstol",
+      "icon": "church"
+    },
+    {
+      "time": "6:00 PM",
+      "title": "Recepción",
+      "description": "Restaurante Don Franklin",
+      "icon": "glass"
+    }
+  ]
+}
