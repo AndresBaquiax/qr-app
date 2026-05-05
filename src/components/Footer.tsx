@@ -32,7 +32,7 @@ export default function Footer({ mainColor, accentColor }: { mainColor: string, 
       
       {/* Copyright/Rights section at the very bottom on small screens or right side on large */}
       <div className="w-full md:w-auto mt-12 md:mt-0 md:self-end opacity-50 text-xs font-light text-center md:text-right">
-        <p>© 2026 Jimena Fernanda. Todos los derechos reservados.</p>
+        <p>© 2026 Todos los derechos reservados.</p>
         <p className="mt-1">Hecho con ♥ en Guatemala</p>
       </div>
     </footer>
