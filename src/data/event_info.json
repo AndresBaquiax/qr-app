@@ -1,6 +1,6 @@
 {
   "theme": {
-    "title": "Mis 15 Años - Alicia en el País de las Maravillas",
+    "title": "15 Años de Jimena Fernanda",
     "mainColor": "#0A192F",
     "accentColor": "#D4AF37",
     "fonts": {
@@ -52,11 +52,11 @@
       "address": "San Mateo, Quetzaltenango",
       "time": "16:00",
       "coordinates": {
-        "lat": 14.8631,
-        "lng": -91.5645
+        "lat": 14.859083453623281,
+        "lng": -91.59215697285768
       },
-      "mapLink": "https://maps.google.com/?q=Parroquia+San+Mateo+Apostol+Quetzaltenango",
-      "wazeLink": "https://waze.com/ul?q=Parroquia+San+Mateo+Apostol+Quetzaltenango"
+      "mapLink": "https://www.google.com/maps/place/Iglesia+Catolica/@14.8590267,-91.5921878,21z/data=!4m6!3m5!1s0x858e99428535fda5:0x586c8ba34136df72!8m2!3d14.8590756!4d-91.5921591!16s%2Fg%2F11fssygfwy?entry=ttu&g_ep=EgoyMDI2MDUwMi4wIKXMDSoASAFQAw%3D%3D",
+      "wazeLink": "https://ul.waze.com/ul?ll=14.85904154%2C-91.59215927&navigate=yes&zoom=17&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location"
     },
     {
       "type": "Recepción",
@@ -64,11 +64,11 @@
       "address": "Quetzaltenango, Guatemala",
       "time": "18:00",
       "coordinates": {
-        "lat": 14.8347,
-        "lng": -91.5183
+        "lat": 14.86403162097538,
+        "lng": -91.55871602427828
       },
-      "mapLink": "https://maps.google.com/?q=Restaurante+Don+Franklin+Quetzaltenango",
-      "wazeLink": "https://waze.com/ul?q=Restaurante+Don+Franklin+Quetzaltenango"
+      "mapLink": "https://www.google.com/maps/place/Don+Franklin+Restaurante/@14.8640232,-91.5587324,21z/data=!4m9!1m2!2m1!1sParroquia+San+Mateo+Apostol+Quetzaltenango!3m5!1s0x858e984ac0bb2e71:0xe1698cc54bbdc7f1!8m2!3d14.8640223!4d-91.5587182!16s%2Fg%2F11cs23gd8j?entry=ttu&g_ep=EgoyMDI2MDUwMi4wIKXMDSoASAFQAw%3D%3D",
+      "wazeLink": "https://ul.waze.com/ul?ll=14.86428872%2C-91.55882478&navigate=yes&zoom=17&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location"
     }
   ],
   "itinerary": [
