@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     return NextResponse.json(invitation, { status: 201 });
   } catch (error) {
     console.error('Error creating invitation:', error);
-    return NextResponse.json({ error: 'Error al crear la invitación' }, { status: 500 });
+    return NextResponse.json({ error: 'Error al crear la invitación', details: error instanceof Error ? error.message : String(error) }, { status: 500 });
   }
 }
 
@@ -25,6 +25,6 @@ export async function GET() {
     return NextResponse.json(invitations);
   } catch (error) {
     console.error('Error fetching invitations:', error);
-    return NextResponse.json({ error: 'Error al obtener las invitaciones' }, { status: 500 });
+    return NextResponse.json({ error: 'Error al obtener las invitaciones', details: error instanceof Error ? error.message : String(error) }, { status: 500 });
   }
 }
