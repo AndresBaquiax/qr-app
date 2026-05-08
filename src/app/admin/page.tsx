@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
-import { Plus, Download, Users, CheckCircle, XCircle } from 'lucide-react';
+import { Plus, Download, Users, CheckCircle, XCircle, Copy } from 'lucide-react';
 
 type Invitation = {
   id: string;
@@ -21,6 +21,7 @@ export default function AdminPage() {
   const [maxGuests, setMaxGuests] = useState(1);
   const [loading, setLoading] = useState(false);
   const [baseUrl, setBaseUrl] = useState('');
+  const [copiedId, setCopiedId] = useState<string | null>(null);
 
   useEffect(() => {
     // Definimos la URL base para el QR
@@ -181,6 +182,7 @@ export default function AdminPage() {
                       <th className="p-4 font-medium">Personas</th>
                       <th className="p-4 font-medium">Estado</th>
                       <th className="p-4 font-medium">Código QR</th>
+                      <th className="p-4 font-medium">Enlace</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
@@ -240,12 +242,27 @@ export default function AdminPage() {
                               </button>
                             </div>
                           </td>
+                          <td className="p-4">
+                            <button
+                              onClick={() => {
+                                navigator.clipboard.writeText(qrUrl);
+                                setCopiedId(inv.id);
+                                setTimeout(() => setCopiedId(null), 2000);
+                              }}
+                              className={`flex items-center gap-2 font-medium transition-colors ${
+                                copiedId === inv.id ? 'text-green-600' : 'text-blue-600 hover:text-blue-800'
+                              }`}
+                            >
+                              <Copy size={16} />
+                              <span>{copiedId === inv.id ? '¡Copiado!' : 'Copiar link'}</span>
+                            </button>
+                          </td>
                         </tr>
                       );
                     })}
                     {invitations.length === 0 && (
                       <tr>
-                        <td colSpan={4} className="p-8 text-center text-gray-500">
+                        <td colSpan={5} className="p-8 text-center text-gray-500">
                           No hay invitaciones creadas todavía.
                         </td>
                       </tr>
