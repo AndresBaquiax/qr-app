@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
-import { Plus, Download, Users, CheckCircle, XCircle, Copy, ChevronLeft, ChevronRight, Search, Filter } from 'lucide-react';
+import { Plus, Download, Users, CheckCircle, XCircle, Copy, ChevronLeft, ChevronRight, Search, Filter, ArrowUpDown } from 'lucide-react';
 
 type Invitation = {
   id: string;
@@ -26,6 +26,7 @@ export default function AdminPage() {
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [sortBy, setSortBy] = useState('date_desc');
 
   useEffect(() => {
     // Definimos la URL base para el QR
@@ -120,9 +121,16 @@ export default function AdminPage() {
     return matchesSearch && matchesStatus;
   });
 
+  const sortedInvitations = [...filteredInvitations].sort((a, b) => {
+    if (sortBy === 'date_desc') return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    if (sortBy === 'alpha_asc') return a.familyName.localeCompare(b.familyName);
+    if (sortBy === 'guests_desc') return b.maxGuests - a.maxGuests;
+    return 0;
+  });
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentInvitations = filteredInvitations.slice(indexOfFirstItem, indexOfLastItem);
+  const currentInvitations = sortedInvitations.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredInvitations.length / itemsPerPage);
 
   const handlePageChange = (pageNumber: number) => {
@@ -229,9 +237,9 @@ export default function AdminPage() {
           {/* Lista de Invitaciones */}
           <div className="col-span-1 md:col-span-2">
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="p-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <h2 className="text-xl font-semibold text-slate-800">Lista de Invitados</h2>
-                <div className="flex flex-col sm:flex-row gap-3">
+              <div className="p-6 border-b border-gray-100 flex flex-col gap-4">
+                <h1 className="text-xl font-semibold text-slate-800 text-center">LISTA DE INVITADOS</h1>
+                <div className="flex flex-col md:flex-row justify-center gap-3">
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <Search size={16} className="text-gray-400" />
@@ -263,6 +271,23 @@ export default function AdminPage() {
                       <option value="pending">Pendiente</option>
                       <option value="attending">Asistirá</option>
                       <option value="not_attending">No Asistirá</option>
+                    </select>
+                  </div>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <ArrowUpDown size={16} className="text-gray-400" />
+                    </div>
+                    <select
+                      value={sortBy}
+                      onChange={(e) => {
+                        setSortBy(e.target.value);
+                        setCurrentPage(1);
+                      }}
+                      className="pl-9 pr-8 py-2 border border-gray-300 rounded-lg text-sm w-full sm:w-auto appearance-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-slate-900"
+                    >
+                      <option value="date_desc">Más recientes</option>
+                      <option value="alpha_asc">Alfabético (A-Z)</option>
+                      <option value="guests_desc">Más personas asignadas</option>
                     </select>
                   </div>
                 </div>
