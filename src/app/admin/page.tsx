@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
-import { Plus, Download, Users, CheckCircle, XCircle, Copy, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Download, Users, CheckCircle, XCircle, Copy, ChevronLeft, ChevronRight, Search, Filter } from 'lucide-react';
 
 type Invitation = {
   id: string;
@@ -24,6 +24,8 @@ export default function AdminPage() {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
 
   useEffect(() => {
     // Definimos la URL base para el QR
@@ -100,11 +102,28 @@ export default function AdminPage() {
     img.src = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData)));
   };
 
-  // Paginación
+  // Filtrado y Paginación
+  const filteredInvitations = invitations.filter((inv) => {
+    // Filtro por búsqueda
+    const matchesSearch = inv.familyName.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    // Filtro por estado
+    let matchesStatus = true;
+    if (statusFilter === 'pending') {
+      matchesStatus = !inv.hasResponded;
+    } else if (statusFilter === 'attending') {
+      matchesStatus = inv.hasResponded && inv.isAttending;
+    } else if (statusFilter === 'not_attending') {
+      matchesStatus = inv.hasResponded && !inv.isAttending;
+    }
+
+    return matchesSearch && matchesStatus;
+  });
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentInvitations = invitations.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(invitations.length / itemsPerPage);
+  const currentInvitations = filteredInvitations.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredInvitations.length / itemsPerPage);
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -160,20 +179,47 @@ export default function AdminPage() {
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mt-6">
               <h2 className="text-xl font-semibold mb-4 text-slate-800">Resumen</h2>
               <div className="space-y-3">
+                {/* Globales */}
                 <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
                   <span className="text-blue-900 font-medium">Total Invitaciones</span>
                   <span className="text-xl font-bold text-blue-900">{invitations.length}</span>
                 </div>
+                <div className="flex justify-between items-center p-3 bg-blue-100/50 rounded-lg">
+                  <span className="text-blue-900 font-medium">Total Personas</span>
+                  <span className="text-xl font-bold text-blue-900">
+                    {invitations.reduce((acc, i) => acc + i.maxGuests, 0)}
+                  </span>
+                </div>
+
+                <hr className="border-gray-100 my-2" />
+                
+                {/* Confirmados */}
                 <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg">
-                  <span className="text-green-900 font-medium">Confirmados (Sí)</span>
+                  <span className="text-green-900 font-medium">Familias Confirmadas</span>
                   <span className="text-xl font-bold text-green-900">
                     {invitations.filter(i => i.hasResponded && i.isAttending).length}
                   </span>
                 </div>
+                <div className="flex justify-between items-center p-3 bg-green-100/50 rounded-lg">
+                  <span className="text-green-900 font-medium">Personas Confirmadas</span>
+                  <span className="text-xl font-bold text-green-900">
+                    {invitations.filter(i => i.hasResponded && i.isAttending).reduce((acc, i) => acc + i.maxGuests, 0)}
+                  </span>
+                </div>
+
+                <hr className="border-gray-100 my-2" />
+
+                {/* Rechazados */}
                 <div className="flex justify-between items-center p-3 bg-red-50 rounded-lg">
-                  <span className="text-red-900 font-medium">Rechazados (No)</span>
+                  <span className="text-red-900 font-medium">Familias Rechazadas</span>
                   <span className="text-xl font-bold text-red-900">
                     {invitations.filter(i => i.hasResponded && !i.isAttending).length}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-red-100/50 rounded-lg">
+                  <span className="text-red-900 font-medium">Personas Rechazadas</span>
+                  <span className="text-xl font-bold text-red-900">
+                    {invitations.filter(i => i.hasResponded && !i.isAttending).reduce((acc, i) => acc + i.maxGuests, 0)}
                   </span>
                 </div>
               </div>
@@ -183,8 +229,43 @@ export default function AdminPage() {
           {/* Lista de Invitaciones */}
           <div className="col-span-1 md:col-span-2">
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="p-6 border-b border-gray-100">
+              <div className="p-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <h2 className="text-xl font-semibold text-slate-800">Lista de Invitados</h2>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Search size={16} className="text-gray-400" />
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Buscar invitado..."
+                      value={searchTerm}
+                      onChange={(e) => {
+                        setSearchTerm(e.target.value);
+                        setCurrentPage(1);
+                      }}
+                      className="pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm w-full sm:w-64 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-slate-900 bg-white"
+                    />
+                  </div>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Filter size={16} className="text-gray-400" />
+                    </div>
+                    <select
+                      value={statusFilter}
+                      onChange={(e) => {
+                        setStatusFilter(e.target.value);
+                        setCurrentPage(1);
+                      }}
+                      className="pl-9 pr-8 py-2 border border-gray-300 rounded-lg text-sm w-full sm:w-auto appearance-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-slate-900"
+                    >
+                      <option value="all">Todos los estados</option>
+                      <option value="pending">Pendiente</option>
+                      <option value="attending">Asistirá</option>
+                      <option value="not_attending">No Asistirá</option>
+                    </select>
+                  </div>
+                </div>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
@@ -272,10 +353,12 @@ export default function AdminPage() {
                         </tr>
                       );
                     })}
-                    {invitations.length === 0 && (
+                    {filteredInvitations.length === 0 && (
                       <tr>
                         <td colSpan={5} className="p-8 text-center text-gray-500">
-                          No hay invitaciones creadas todavía.
+                          {invitations.length === 0 
+                            ? 'No hay invitaciones creadas todavía.' 
+                            : 'No se encontraron invitaciones con los filtros actuales.'}
                         </td>
                       </tr>
                     )}
@@ -284,7 +367,7 @@ export default function AdminPage() {
               </div>
               
               {/* Controles de Paginación */}
-              {invitations.length > 0 && (
+              {filteredInvitations.length > 0 && (
                 <div className="p-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="flex items-center gap-2">
                     <span className="text-sm text-gray-600">Mostrar</span>
