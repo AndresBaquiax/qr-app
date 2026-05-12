@@ -109,7 +109,7 @@ export default function ClientRSVP({ invitation, eventData }: { invitation: Invi
           ) : (
             <form onSubmit={handleSubmit} className="space-y-8 text-left relative z-10">
               <p className="text-center text-slate-600 mb-8 text-lg font-light">
-                Por favor, confirma tu asistencia antes del 22 de Mayo.
+                Por favor, confirma tu asistencia antes del 16 de Mayo.
               </p>
               
               <div className="space-y-2">
