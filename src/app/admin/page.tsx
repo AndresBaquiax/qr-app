@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
-import { Plus, Download, Users, CheckCircle, XCircle, Copy } from 'lucide-react';
+import { Plus, Download, Users, CheckCircle, XCircle, Copy, ChevronLeft, ChevronRight } from 'lucide-react';
 
 type Invitation = {
   id: string;
@@ -22,6 +22,8 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(false);
   const [baseUrl, setBaseUrl] = useState('');
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   useEffect(() => {
     // Definimos la URL base para el QR
@@ -96,6 +98,16 @@ export default function AdminPage() {
     };
     
     img.src = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData)));
+  };
+
+  // Paginación
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentInvitations = invitations.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(invitations.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
   };
 
   return (
@@ -186,7 +198,7 @@ export default function AdminPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
-                    {invitations.map((inv) => {
+                    {currentInvitations.map((inv) => {
                       const qrUrl = `${baseUrl}/invitacion/${inv.token}`;
                       return (
                         <tr key={inv.id} className="hover:bg-gray-50/50">
@@ -270,6 +282,50 @@ export default function AdminPage() {
                   </tbody>
                 </table>
               </div>
+              
+              {/* Controles de Paginación */}
+              {invitations.length > 0 && (
+                <div className="p-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-600">Mostrar</span>
+                    <select 
+                      value={itemsPerPage}
+                      onChange={(e) => {
+                        setItemsPerPage(Number(e.target.value));
+                        setCurrentPage(1); // Reset to first page
+                      }}
+                      className="border border-gray-300 rounded-md text-sm px-2 py-1.5 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-slate-900"
+                    >
+                      {[5, 10, 15, 20, 25].map(opt => (
+                        <option key={opt} value={opt}>{opt}</option>
+                      ))}
+                    </select>
+                    <span className="text-sm text-gray-600">por página</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    <button 
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      className="p-1 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors bg-white"
+                      title="Página Anterior"
+                    >
+                      <ChevronLeft size={20} className="text-gray-600" />
+                    </button>
+                    <span className="text-sm text-gray-600 font-medium px-2">
+                      Página {currentPage} de {totalPages || 1}
+                    </span>
+                    <button 
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      disabled={currentPage === totalPages || totalPages === 0}
+                      className="p-1 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors bg-white"
+                      title="Página Siguiente"
+                    >
+                      <ChevronRight size={20} className="text-gray-600" />
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
